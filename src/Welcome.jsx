@@ -169,6 +169,7 @@ function WelcomePage(props) {
         isForwardsDiagonalWin() ||
         isBackwardsDiagonalWin() ||
         isHorizontalWin() ||
+        isVerticalWin() ||
         null
       );
     }
@@ -201,6 +202,27 @@ function WelcomePage(props) {
         }
       }
     }
+
+    function isVerticalWin() {
+      const { rows } = boardSettings;
+      const { columns } = boardSettings;
+      const { empty } = boardSettings.colors;
+      for (let column = 0; column < columns; column++) {
+        for (let row = 0; row <= rows - 4; row++) {
+          let start = getIndex(row, column);
+          if (board[start] === empty) continue;
+          let counter = 1;
+          for (let k = row + 1; k < row + 4; k++) {
+            if (board[getIndex(k, column)] === board[start]) {
+              counter++;
+              if (counter === 4)
+                return createWinState(start, winTypes.vertical);
+            }
+          }
+        }
+      }
+    }
+
     function isHorizontalWin() {
       const { rows } = boardSettings;
       const { columns } = boardSettings;
